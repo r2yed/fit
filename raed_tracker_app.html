@@ -75,9 +75,9 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:var(--f)
 .plan-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding:8px 10px;background:var(--c2);border-radius:10px;border:.5px solid var(--b2)}
 .plan-bar-txt{font-size:11px;color:var(--txt3)}
 .plan-edit-btn{font-size:11px;font-weight:600;color:var(--teal);background:transparent;border:.5px solid rgba(38,198,166,.4);border-radius:7px;padding:5px 10px;cursor:pointer;font-family:var(--f)}
-.sh-row{display:grid;grid-template-columns:22px 1fr 40px 1fr 34px 26px;gap:4px;margin-bottom:5px}
+.sh-row{display:grid;grid-template-columns:22px 1fr 36px 1fr 32px 24px;gap:4px;margin-bottom:5px}
 .sh{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--txt4);text-align:center}
-.set-row{display:grid;grid-template-columns:22px 1fr 40px 1fr 34px 26px;gap:4px;align-items:center;margin-bottom:5px}
+.set-row{display:grid;grid-template-columns:22px 1fr 36px 1fr 32px 24px;gap:4px;align-items:center;margin-bottom:5px}
 .sn{font-size:12px;font-weight:600;color:var(--txt3);text-align:center}
 .inp{background:var(--c2);border:.5px solid var(--b2);border-radius:9px;color:var(--txt);font-size:16px;font-family:var(--f);font-weight:500;padding:8px 4px;text-align:center;width:100%;-webkit-appearance:none;outline:none;transition:border-color .15s,background .15s}
 .inp:focus{border-color:var(--teal3);background:var(--c3)}
@@ -92,6 +92,14 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:var(--f)
 .tick svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;color:var(--txt4)}
 .dels{width:26px;height:38px;border-radius:9px;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--txt4);flex-shrink:0}
 .dels svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+.stepper-wrap{display:flex;align-items:center;gap:2px;width:100%}
+.step-btn{width:28px;height:38px;flex-shrink:0;border-radius:8px;border:.5px solid var(--b2);background:var(--c2);color:var(--txt2);font-size:17px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;font-family:var(--f);transition:background .1s}
+.step-btn:active{background:var(--c3);color:var(--teal)}
+.step-inp{flex:1;min-width:0;background:var(--c2);border:.5px solid var(--b2);border-radius:8px;color:var(--txt);font-size:16px;font-family:var(--f);font-weight:500;padding:8px 2px;text-align:center;-webkit-appearance:none;outline:none;height:38px;transition:border-color .15s}
+.step-inp:focus{border-color:var(--teal3);background:var(--c3)}
+.step-inp.ok{background:rgba(38,198,166,.1);border-color:#26c6a6}
+.step-inp.low{background:rgba(255,183,77,.1);border-color:#ffb74d}
+.step-inp.bad{background:rgba(255,112,67,.08);border-color:rgba(255,112,67,.4)}
 .btn-row{display:flex;gap:6px;margin-top:8px}
 .ghost-btn{flex:1;padding:9px;background:transparent;border:.5px dashed var(--b3);border-radius:9px;color:var(--txt3);font-size:12px;cursor:pointer;font-family:var(--f);white-space:nowrap}
 .complete-btn{width:100%;padding:15px;border-radius:14px;border:none;font-size:15px;font-weight:600;cursor:pointer;margin-top:14px;font-family:var(--f);color:#0a1a1a}
@@ -534,15 +542,32 @@ function renderDB(){
       h+='<div class="ex-tip">'+ex.tip+'</div>'
         +'<div class="plan-bar"><div class="plan-bar-txt">'+(isCustom?'Custom: '+plan.join('-')+' reps':'Default: '+ex.tS+'\u00d7'+ex.tR)+'</div>'
         +'<button class="plan-edit-btn" onclick="openPlanSheet(\''+ex.id+'\');event.stopPropagation()">Edit plan</button></div>'
-        +'<div class="sh-row"><div class="sh">#</div><div class="sh">Done reps</div><div class="sh">Target</div><div class="sh">kg</div><div class="sh">%</div><div></div></div>';
+        +'<div class="sh-row"><div class="sh">#</div><div class="sh">Reps \u00b1</div><div class="sh">Tgt</div><div class="sh">kg \u00b1</div><div class="sh">%</div><div></div></div>';
       sets.forEach(function(s,si){
         var tR=getTR(ex.id,si),a=parseInt(s.reps)||0,sp=tR?Math.min(100,Math.round(a/tR*100)):0;
-        h+='<div class="set-row"><div class="sn">'+(si+1)+'</div>'
-          +'<input class="inp '+ic(s.reps,tR)+'" type="number" inputmode="numeric" value="'+s.reps+'" placeholder="'+tR+'" oninput="uS(\''+ex.id+'\','+si+',\'reps\',this.value)">'
+        var rc=a===0?'':a>=tR?'ok':a>=tR*.75?'low':'bad';
+        h+='<div class="set-row">'
+          +'<div class="sn">'+(si+1)+'</div>'
+          +'<div class="stepper-wrap">'
+          +'<button class="step-btn" onclick="stepVal(\''+ex.id+'\','+si+',\'reps\',-1)">\u2212</button>'
+          +'<input class="step-inp '+rc+'" id="ri-'+ex.id+'-'+si+'" type="number" inputmode="numeric"'
+          +' value="'+(s.reps||'')+'" placeholder="'+tR+'"'
+          +' oninput="uSLive(\''+ex.id+'\','+si+',\'reps\',this.value)"'
+          +' onblur="uSBlur(\''+ex.id+'\','+si+',\'reps\',this.value)">'
+          +'<button class="step-btn" onclick="stepVal(\''+ex.id+'\','+si+',\'reps\',1)">+</button>'
+          +'</div>'
           +'<div class="tgt-lbl">'+tR+'</div>'
-          +'<input class="inp" type="number" inputmode="decimal" value="'+s.kg+'" placeholder="kg" step="0.5" oninput="uS(\''+ex.id+'\','+si+',\'kg\',this.value)">'
-          +'<div class="spct" style="color:'+(a>0?pc(sp):'var(--txt4)')+'">'+( a>0?sp+'%':'—')+'</div>'
-          +'<button class="dels" onclick="dS(\''+ex.id+'\','+si+')"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>';
+          +'<div class="stepper-wrap">'
+          +'<button class="step-btn" onclick="stepVal(\''+ex.id+'\','+si+',\'kg\',-0.5)">\u2212</button>'
+          +'<input class="step-inp" id="ki-'+ex.id+'-'+si+'" type="number" inputmode="decimal"'
+          +' value="'+(s.kg||'')+'" placeholder="kg" step="0.5"'
+          +' oninput="uSLive(\''+ex.id+'\','+si+',\'kg\',this.value)"'
+          +' onblur="uSBlur(\''+ex.id+'\','+si+',\'kg\',this.value)">'
+          +'<button class="step-btn" onclick="stepVal(\''+ex.id+'\','+si+',\'kg\',0.5)">+</button>'
+          +'</div>'
+          +'<div class="spct" id="sp-'+ex.id+'-'+si+'" style="color:'+(a>0?pc(sp):'var(--txt4)')+'">'+( a>0?sp+'%':'—')+'</div>'
+          +'<button class="dels" onclick="dS(\''+ex.id+'\','+si+')"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>'
+          +'</div>';
       });
       h+='<div class="btn-row"><button class="ghost-btn" onclick="aS(\''+ex.id+'\')">+ Add set</button>'
         +'<button class="ghost-btn" onclick="fillT(\''+ex.id+'\')">Fill target reps</button></div></div>';
@@ -553,7 +578,50 @@ function renderDB(){
   document.getElementById('day-body').innerHTML=h;
 }
 function togEx(id){D.ox=D.ox===id?null:id;renderDB();}
-function uS(exId,si,f,v){var k=K(D.ad,exId);if(!D.sets[k])return;D.sets[k][si][f]=v;save();renderDB();}
+
+// Save value silently while typing — NO re-render (fixes iOS focus bug)
+function uSLive(exId,si,f,v){
+  var k=K(D.ad,exId);
+  if(!D.sets[k])return;
+  D.sets[k][si][f]=v;
+  // Update just the % display inline without re-rendering
+  if(f==='reps'){
+    var tR=getTR(exId,si);
+    var a=parseInt(v)||0;
+    var sp=tR?Math.min(100,Math.round(a/tR*100)):0;
+    var spEl=document.getElementById('sp-'+exId+'-'+si);
+    if(spEl){spEl.textContent=a>0?sp+'%':'—';spEl.style.color=a>0?pc(sp):'var(--txt4)';}
+    // Update input colour class
+    var el=document.getElementById('ri-'+exId+'-'+si);
+    if(el){el.className='step-inp '+(a===0?'':a>=tR?'ok':a>=tR*.75?'low':'bad');}
+  }
+  save();
+}
+
+// Full re-render when user leaves a field
+function uSBlur(exId,si,f,v){
+  var k=K(D.ad,exId);
+  if(!D.sets[k])return;
+  D.sets[k][si][f]=v;
+  save();
+  renderDB();
+}
+
+// Stepper +/- buttons
+function stepVal(exId,si,f,delta){
+  var k=K(D.ad,exId);
+  if(!D.sets[k])return;
+  var cur=parseFloat(D.sets[k][si][f])||0;
+  var next;
+  if(f==='reps'){
+    next=Math.max(0,Math.round(cur+delta));
+  } else {
+    next=Math.max(0,Math.round((cur+delta)*10)/10);
+  }
+  D.sets[k][si][f]=String(next);
+  save();
+  renderDB();
+}
 function dS(exId,si){
   var k=K(D.ad,exId);if(!D.sets[k]||D.sets[k].length<=1)return;
   D.sets[k].splice(si,1);if(D.plans[exId])D.plans[exId].splice(si,1);
@@ -783,13 +851,26 @@ function openEdit(i){
     var exId=entry[0],exD=entry[1];
     var plan=exD.plan||Array.from({length:exD.tS||3},function(){return exD.tR||12;});
     h+='<div class="elbl">'+exD.name+'</div>'
-      +'<div class="sh-row"><div class="sh">#</div><div class="sh">Done reps</div><div class="sh">Target</div><div class="sh">kg</div><div class="sh">%</div><div></div></div>';
+      +'<div class="sh-row"><div class="sh">#</div><div class="sh">Reps \u00b1</div><div class="sh">Tgt</div><div class="sh">kg \u00b1</div><div class="sh">%</div><div></div></div>';
     exD.sets.forEach(function(set,si){
       var tR=plan[si]||exD.tR||12,a=parseInt(set.reps)||0,sp=tR?Math.min(100,Math.round(a/tR*100)):0;
+      var rc=a===0?'':a>=tR?'ok':a>=tR*.75?'low':'bad';
       h+='<div class="set-row"><div class="sn">'+(si+1)+'</div>'
-        +'<input class="inp '+ic(set.reps,tR)+'" type="number" inputmode="numeric" value="'+set.reps+'" placeholder="'+tR+'" oninput="eSV('+i+',\''+exId+'\','+si+',\'reps\',this.value)">'
+        +'<div class="stepper-wrap">'
+        +'<button class="step-btn" onclick="eStep('+i+',\''+exId+'\','+si+',\'reps\',-1)">\u2212</button>'
+        +'<input class="step-inp '+rc+'" type="number" inputmode="numeric" value="'+set.reps+'" placeholder="'+tR+'"'
+        +' oninput="eSVLive('+i+',\''+exId+'\','+si+',\'reps\',this.value)"'
+        +' onblur="eSV('+i+',\''+exId+'\','+si+',\'reps\',this.value)">'
+        +'<button class="step-btn" onclick="eStep('+i+',\''+exId+'\','+si+',\'reps\',1)">+</button>'
+        +'</div>'
         +'<div class="tgt-lbl">'+tR+'</div>'
-        +'<input class="inp" type="number" inputmode="decimal" value="'+set.kg+'" placeholder="kg" step="0.5" oninput="eSV('+i+',\''+exId+'\','+si+',\'kg\',this.value)">'
+        +'<div class="stepper-wrap">'
+        +'<button class="step-btn" onclick="eStep('+i+',\''+exId+'\','+si+',\'kg\',-0.5)">\u2212</button>'
+        +'<input class="step-inp" type="number" inputmode="decimal" value="'+set.kg+'" placeholder="kg" step="0.5"'
+        +' oninput="eSVLive('+i+',\''+exId+'\','+si+',\'kg\',this.value)"'
+        +' onblur="eSV('+i+',\''+exId+'\','+si+',\'kg\',this.value)">'
+        +'<button class="step-btn" onclick="eStep('+i+',\''+exId+'\','+si+',\'kg\',0.5)">+</button>'
+        +'</div>'
         +'<div class="spct" style="color:'+(a>0?pc(sp):'var(--txt4)')+'">'+( a>0?sp+'%':'—')+'</div>'
         +'<button class="dels" onclick="eDS('+i+',\''+exId+'\','+si+')"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>';
     });
@@ -800,9 +881,27 @@ function openEdit(i){
   document.getElementById('overlay').style.display='flex';
 }
 function updSessDate(i,iso){D.sessions[i].isoDate=iso;D.sessions[i].date=isoToDisplay(iso);save();}
+function eSVLive(si,exId,setIdx,f,v){
+  // Save only, no re-render — fixes iOS typing bug
+  D.sessions[si].exData[exId].sets[setIdx][f]=f==='kg'?parseFloat(v)||0:parseInt(v)||0;
+  save();
+}
 function eSV(si,exId,setIdx,f,v){
   var exD=D.sessions[si].exData[exId];
   exD.sets[setIdx][f]=f==='kg'?parseFloat(v)||0:parseInt(v)||0;
+  var plan=exD.plan||Array.from({length:exD.tS||exD.sets.length},function(){return exD.tR||12;});
+  var tR=plan.reduce(function(a,r){return a+r;},0);
+  exD.pct=tR?Math.min(100,Math.round(exD.sets.reduce(function(a,s){return a+s.reps;},0)/tR*100)):0;
+  var ps=Object.values(D.sessions[si].exData).map(function(e){return e.pct||0;});
+  D.sessions[si].pct=Math.round(ps.reduce(function(a,p){return a+p;},0)/ps.length);
+  save();openEdit(si);
+}
+function eStep(si,exId,setIdx,f,delta){
+  var exD=D.sessions[si].exData[exId];
+  var cur=parseFloat(exD.sets[setIdx][f])||0;
+  var next=f==='reps'?Math.max(0,Math.round(cur+delta)):Math.max(0,Math.round((cur+delta)*10)/10);
+  exD.sets[setIdx][f]=next;
+  // recalc pct
   var plan=exD.plan||Array.from({length:exD.tS||exD.sets.length},function(){return exD.tR||12;});
   var tR=plan.reduce(function(a,r){return a+r;},0);
   exD.pct=tR?Math.min(100,Math.round(exD.sets.reduce(function(a,s){return a+s.reps;},0)/tR*100)):0;
