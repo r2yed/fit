@@ -1343,18 +1343,29 @@ function confirmDate(){var iso=document.getElementById('sess-date').value;if(!is
 function doComplete(iso){
   var day=DAYS.find(function(d){return d.id===D.ad;});
   var exData={};
+
+  // IMPORTANT FIX:
+  // Calculate the workout completion BEFORE clearing the temporary set data.
+  // Previously the app deleted D.sets first, then called dayPct(day), so the
+  // saved session became 0% in the Calendar even when the workout was done.
+  var finalPct=dayPct(day);
+
   day.ex.forEach(function(ex){
     var k=K(day.id,ex.id);var plan=getPlan(ex);
     var sets=(D.sets[k]||[]).map(function(s){return{kg:parseFloat(s.kg)||0,reps:parseInt(s.reps)||0};});
     var aR=sets.reduce(function(a,s){return a+s.reps;},0);
     var tR=plan.reduce(function(a,r){return a+r;},0);
     exData[ex.id]={name:ex.name,sets:sets,tR:ex.tR,tS:ex.tS,plan:plan.slice(),pct:tR?Math.min(100,Math.round(aR/tR*100)):0};
-    delete D.sets[k];
   });
+
+  // Now that the completion data has been safely copied to the session,
+  // clear only the temporary live workout inputs for this day.
+  day.ex.forEach(function(ex){delete D.sets[K(day.id,ex.id)];});
+
   if(!D.startDate)D.startDate=iso;
   var feel=D.feelToday;D.feelToday=null;
   var sleep=D.sleepToday||'';D.sleepToday='';
-  D.sessions.push({date:isoToDisplay(iso),isoDate:iso,dayId:day.id,dayName:day.name,week:D.week,exData:exData,pct:dayPct(day),feel:feel,sleep:sleep});
+  D.sessions.push({date:isoToDisplay(iso),isoDate:iso,dayId:day.id,dayName:day.name,week:D.week,exData:exData,pct:finalPct,feel:feel,sleep:sleep});
   D.ox=null;save();updH();renderDR();renderDB();renderSH();renderToday();
 }
 
