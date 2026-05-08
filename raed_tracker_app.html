@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="RaedFit">
-<meta name="theme-color" content="#060610">
+<meta name="theme-color" content="#120B2E">
 <title>RaedFit</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap');
@@ -16,38 +16,38 @@
    Screen: 430pt wide × 932pt tall | Safe top ~59pt | Safe bottom ~34pt   */
 :root{
   /* Backgrounds — deep space */
-  --bg:#060610;
-  --c1:#0c0c1e;
-  --c2:#12122a;
-  --c3:#181836;
-  --c4:#1e1e42;
+  --bg:#080713;
+  --c1:#121129;
+  --c2:#1a1840;
+  --c3:#242158;
+  --c4:#302b70;
 
   /* Borders */
-  --b1:#1c1c38;
-  --b2:#262650;
-  --b3:#323268;
+  --b1:#2c2862;
+  --b2:#3a3478;
+  --b3:#5146a3;
 
   /* ── NEW ACCENT PALETTE ─────────────────────────────── */
-  --violet:#7C5CFC;   /* primary actions, Day 1 Push     */
-  --violet2:#A78BFA;  /* soft violet                     */
-  --cyan:#00D4AA;     /* completion, progress bars       */
-  --cyan2:#4DDEC8;    /* lighter cyan                    */
-  --coral:#FF4D6D;    /* energy, danger, Day 4           */
-  --coral2:#FF7A8A;   /* lighter coral                   */
-  --amber:#FFB830;    /* overload alerts, warnings       */
-  --amber2:#FFD080;   /* lighter amber                   */
-  --blue:#4D9FFF;     /* Day 2 Pull                      */
-  --blue2:#80BFFF;    /* lighter blue                    */
-  --pink:#FF6CB5;     /* Day 3 Legs                      */
-  --pink2:#FF99CC;    /* lighter pink                    */
-  --green:#2ECC8E;    /* success states                  */
-  --green2:#5EDAAA;   /* lighter green                   */
+  --violet:#8B5CF6;   /* primary actions, Day 1 Push     */
+  --violet2:#C4B5FD;  /* soft violet                     */
+  --cyan:#00F5D4;     /* completion, progress bars       */
+  --cyan2:#67E8F9;    /* lighter cyan                    */
+  --coral:#FF477E;    /* energy, danger, Day 4           */
+  --coral2:#FF8FAB;   /* lighter coral                   */
+  --amber:#FFD166;    /* overload alerts, warnings       */
+  --amber2:#FFE29A;   /* lighter amber                   */
+  --blue:#38BDF8;     /* Day 2 Pull                      */
+  --blue2:#93C5FD;    /* lighter blue                    */
+  --pink:#FF4FD8;     /* Day 3 Legs                      */
+  --pink2:#FDA4FF;    /* lighter pink                    */
+  --green:#22E58E;    /* success states                  */
+  --green2:#86EFAC;   /* lighter green                   */
   --red:#FF3B5C;      /* danger                          */
 
   /* Text */
-  --txt:#EEEEF8;
-  --txt2:#9898B8;
-  --txt3:#606085;
+  --txt:#FFFFFF;
+  --txt2:#C6C2EA;
+  --txt3:#9690C8;
   --txt4:#303055;
 
   /* Safe areas — iPhone 16 Pro Max */
@@ -76,10 +76,10 @@ html{
 }
 body{
   width:100%;
-  height:100%;
   min-height:100%;
+  min-height:-webkit-fill-available;
   margin:0;
-  background:var(--bg);
+  background:linear-gradient(180deg,#120B2E 0%, var(--bg) 42%, #061B22 100%);
   color:var(--txt);
   font-family:var(--f);
   font-size:17px;
@@ -91,14 +91,21 @@ body{
   display:flex;
   flex-direction:column;
   width:100%;
+  height:100vh;
+  height:100svh;
+  height:100dvh;
   height:var(--vh,100dvh);
-  min-height:0;
+  min-height:-webkit-fill-available;
   max-width:none;
   max-height:none;
   position:fixed;
   inset:0;
   overflow:hidden;
-  background:var(--bg);
+  background:
+    radial-gradient(circle at 18% 0%,rgba(255,79,216,.22),transparent 35%),
+    radial-gradient(circle at 86% 18%,rgba(0,245,212,.18),transparent 34%),
+    radial-gradient(circle at 50% 100%,rgba(255,209,102,.10),transparent 40%),
+    var(--bg);
   padding-left:var(--sl);
   padding-right:var(--sr);
 }
@@ -118,7 +125,7 @@ body{
 /* ── TOPBAR ─────────────────────────────────────────────────────────── */
 .topbar{
   padding:calc(var(--st) + 14px) 20px 14px;
-  background:rgba(6,6,16,.96);
+  background:linear-gradient(135deg,rgba(18,11,46,.96),rgba(6,27,34,.94));
   border-bottom:0.5px solid var(--b1);
   flex-shrink:0;
   backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
@@ -142,21 +149,21 @@ body{
 }
 
 /* ── SCROLL ─────────────────────────────────────────────────────────── */
-.scroll{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:0 18px calc(32px + var(--sb));overscroll-behavior:contain}
+.scroll{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:0 18px 24px;overscroll-behavior:contain}
 .scroll::-webkit-scrollbar{display:none}
 
 /* ── BOTTOM NAV ─────────────────────────────────────────────────────── */
 .nav{
   display:flex;
-  background:rgba(12,12,30,.96);
+  background:linear-gradient(135deg,rgba(26,24,64,.98),rgba(10,40,48,.96));
   border-top:0.5px solid var(--b1);
-  padding-bottom:var(--sb);
+  padding-bottom:max(var(--sb),14px);
   flex-shrink:0;
   backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
 }
 .nb{
   flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;
-  padding:11px 4px 8px;border:none;background:transparent;cursor:pointer;
+  padding:12px 4px 9px;border:none;background:transparent;cursor:pointer;
   color:var(--txt3);font-size:10px;font-family:var(--f);font-weight:500;
   transition:color .2s;
 }
@@ -174,7 +181,7 @@ body{
 
 /* ── COMMON CARD ─────────────────────────────────────────────────────── */
 .card{
-  background:var(--c1);border:0.5px solid var(--b1);
+  background:linear-gradient(180deg,rgba(26,24,64,.92),rgba(18,17,41,.96));border:0.5px solid var(--b1);
   border-radius:20px;margin-bottom:12px;overflow:hidden;
 }
 .card-pad{padding:16px 18px}
@@ -193,7 +200,7 @@ body{
 /* ── TODAY SCREEN ─────────────────────────────────────────────────────── */
 .today-date{font-size:14px;color:var(--violet2);font-weight:500;margin-bottom:12px}
 
-.today-controls{background:var(--c1);border:0.5px solid var(--b1);border-radius:20px;padding:14px 16px;margin-bottom:12px}
+.today-controls{background:linear-gradient(180deg,rgba(26,24,64,.92),rgba(18,17,41,.96));border:0.5px solid var(--b1);border-radius:20px;padding:14px 16px;margin-bottom:12px}
 .today-controls-title{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--txt3);margin-bottom:10px}
 .today-pick-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
 .today-select,.today-date-input,.sleep-input{width:100%;padding:13px 12px;border-radius:13px;border:0.5px solid var(--b2);background:var(--c2);color:var(--txt);font-size:15px;font-family:var(--f);outline:none;-webkit-appearance:none}
@@ -225,7 +232,7 @@ body{
   border-radius:14px;padding:13px 16px;display:flex;align-items:center;gap:12px;margin-bottom:12px;
 }
 .overload-txt{font-size:14px;color:var(--amber);line-height:1.5}
-.week-chart-card{background:var(--c1);border:0.5px solid var(--b1);border-radius:20px;padding:16px;margin-bottom:12px}
+.week-chart-card{background:linear-gradient(180deg,rgba(26,24,64,.92),rgba(18,17,41,.96));border:0.5px solid var(--b1);border-radius:20px;padding:16px;margin-bottom:12px}
 .wbar-wrap{display:flex;align-items:flex-end;gap:8px;height:64px;margin-top:12px}
 .wbar-item{display:flex;flex-direction:column;align-items:center;flex:1}
 .wbar{width:100%;border-radius:6px 6px 0 0;min-height:4px}
@@ -256,7 +263,7 @@ body{
 .dh-bar-f{height:100%;border-radius:6px;transition:width .4s}
 
 /* ── EXERCISE CARD ─────────────────────────────────────────────────────── */
-.ex{background:var(--c1);border:0.5px solid var(--b1);border-radius:20px;margin-bottom:12px;overflow:hidden;transition:border-color .2s}
+.ex{background:linear-gradient(180deg,rgba(26,24,64,.92),rgba(18,17,41,.96));border:0.5px solid var(--b1);border-radius:20px;margin-bottom:12px;overflow:hidden;transition:border-color .2s}
 .ex-head{display:flex;align-items:center;padding:16px 18px;cursor:pointer;gap:14px;min-height:72px}
 .ex-ico{width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;font-weight:700}
 .ex-info{flex:1;min-width:0}
@@ -347,7 +354,7 @@ body{
 .complete-btn:active{opacity:.85}
 
 /* ── SESSION HISTORY ─────────────────────────────────────────────────── */
-.sess-card{background:var(--c1);border:0.5px solid var(--b1);border-radius:18px;margin-bottom:10px;overflow:hidden}
+.sess-card{background:linear-gradient(180deg,rgba(26,24,64,.92),rgba(18,17,41,.96));border:0.5px solid var(--b1);border-radius:18px;margin-bottom:10px;overflow:hidden}
 .sess-top{display:flex;align-items:flex-start;justify-content:space-between;padding:14px 18px 10px}
 .sess-acts{display:flex;gap:6px;flex-shrink:0;margin-left:10px}
 .sab{padding:8px 14px;border-radius:10px;border:0.5px solid var(--b2);background:var(--c2);color:var(--txt2);font-size:12px;font-weight:500;cursor:pointer;font-family:var(--f)}
@@ -356,7 +363,7 @@ body{
 .sess-ex{display:flex;align-items:center;justify-content:space-between;padding:9px 18px;border-top:0.5px solid var(--b1)}
 
 /* ── CALENDAR ─────────────────────────────────────────────────────────── */
-.cal-summary{background:var(--c1);border:0.5px solid var(--b1);border-radius:20px;padding:18px;margin-bottom:16px}
+.cal-summary{background:linear-gradient(180deg,rgba(26,24,64,.92),rgba(18,17,41,.96));border:0.5px solid var(--b1);border-radius:20px;padding:18px;margin-bottom:16px}
 .cal-sum-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .cal-sum-row:last-child{margin-bottom:0}
 .cal-sum-label{font-size:14px;color:var(--txt3)}
@@ -384,7 +391,7 @@ body{
 
 /* ── PROGRESS ─────────────────────────────────────────────────────────── */
 .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
-.stat-box{background:var(--c1);border:0.5px solid var(--b1);border-radius:18px;padding:18px}
+.stat-box{background:linear-gradient(180deg,rgba(26,24,64,.92),rgba(18,17,41,.96));border:0.5px solid var(--b1);border-radius:18px;padding:18px}
 .sv{font-size:30px;font-weight:700;margin-bottom:4px;letter-spacing:-.5px}
 .sl{font-size:13px;color:var(--txt3)}
 .ex-pick{
@@ -392,7 +399,7 @@ body{
   background:var(--c1);color:var(--txt);font-size:16px;font-family:var(--f);
   margin-bottom:14px;-webkit-appearance:none;outline:none;
 }
-.chart-card{background:var(--c1);border:0.5px solid var(--b1);border-radius:18px;padding:16px;margin-bottom:14px}
+.chart-card{background:linear-gradient(180deg,rgba(26,24,64,.92),rgba(18,17,41,.96));border:0.5px solid var(--b1);border-radius:18px;padding:16px;margin-bottom:14px}
 .ptbl{width:100%;border-collapse:collapse;font-size:14px}
 .ptbl th{color:var(--txt3);font-weight:500;padding:9px 6px;text-align:center;border-bottom:0.5px solid var(--b1);font-size:11px;text-transform:uppercase;letter-spacing:.04em}
 .ptbl td{padding:12px 6px;text-align:center;border-bottom:0.5px solid var(--b1);color:var(--txt)}
@@ -400,7 +407,7 @@ body{
 .up{color:var(--cyan);font-weight:600}.dn{color:var(--coral);font-weight:600}.nc{color:var(--txt3)}
 
 /* ── BODY STATS ─────────────────────────────────────────────────────────── */
-.bcard{background:var(--c1);border:0.5px solid var(--b1);border-radius:20px;padding:20px;margin-bottom:14px}
+.bcard{background:linear-gradient(180deg,rgba(26,24,64,.92),rgba(18,17,41,.96));border:0.5px solid var(--b1);border-radius:20px;padding:20px;margin-bottom:14px}
 .fg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
 .field label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--txt3);font-weight:600;margin-bottom:5px}
 .field input{width:100%;padding:13px;border-radius:13px;border:0.5px solid var(--b2);background:var(--c2);color:var(--txt);font-size:16px;font-family:var(--f);text-align:center;-webkit-appearance:none;outline:none;transition:border-color .2s}
@@ -411,7 +418,7 @@ body{
   background:linear-gradient(135deg,var(--violet),var(--cyan));
   color:#fff;font-size:16px;font-weight:700;cursor:pointer;font-family:var(--f);
 }
-.hentry{background:var(--c1);border:0.5px solid var(--b1);border-radius:18px;padding:16px;margin-bottom:10px}
+.hentry{background:linear-gradient(180deg,rgba(26,24,64,.92),rgba(18,17,41,.96));border:0.5px solid var(--b1);border-radius:18px;padding:16px;margin-bottom:10px}
 .mg{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}
 .mi{background:var(--c2);border-radius:12px;padding:10px 5px;text-align:center}
 .mi-v{font-size:16px;font-weight:600}
@@ -429,7 +436,7 @@ body{
 .wsc-v{font-size:26px;font-weight:700;line-height:1;margin-bottom:4px;letter-spacing:-.5px}
 .wsc-l{font-size:11px;color:var(--txt3)}
 .rout{
-  width:100%;background:var(--c1);border:0.5px solid var(--b1);border-radius:16px;
+  width:100%;background:linear-gradient(180deg,rgba(26,24,64,.92),rgba(18,17,41,.96));border:0.5px solid var(--b1);border-radius:16px;
   color:var(--txt3);font-size:12px;font-family:monospace;padding:16px;line-height:1.7;
   resize:none;height:220px;outline:none;
 }
@@ -1357,7 +1364,9 @@ function copyReport(){var t=document.getElementById('rout').value;if(navigator.c
 /* iOS viewport fix: keeps the app exactly inside the visible iPhone screen,
    including when Safari toolbars show/hide or when installed to Home Screen. */
 function setIPhoneViewport(){
-  var h = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+  /* Use the larger value so Safari's toolbar does not leave a short app with an empty band at the bottom. */
+  var vv = window.visualViewport ? window.visualViewport.height : 0;
+  var h = Math.max(window.innerHeight || 0, vv || 0);
   document.documentElement.style.setProperty('--vh', h + 'px');
 }
 setIPhoneViewport();
