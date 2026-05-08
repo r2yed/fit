@@ -69,16 +69,13 @@
 
 html{
   width:100%;
-  height:100%;
   min-height:100%;
   background:var(--bg);
   overflow:hidden;
 }
 body{
   width:100%;
-  height:100%;
   min-height:100%;
-  min-height:-webkit-fill-available;
   margin:0;
   background:
     radial-gradient(circle at 18% 0%,rgba(255,79,216,.22),transparent 35%),
@@ -89,18 +86,19 @@ body{
   font-family:var(--f);
   font-size:17px;
   overflow:hidden;
-  overscroll-behavior:none;
-  -webkit-text-size-adjust:100%;
+  padding-left:var(--sl);padding-right:var(--sr);
   position:fixed;
   inset:0;
+  overscroll-behavior:none;
 }
 #app{
   display:flex;
   flex-direction:column;
   width:100%;
-  height:100%;
-  height:-webkit-fill-available;
-  min-height:100%;
+  height:100vh;
+  height:100svh;
+  height:100dvh;
+  min-height:-webkit-fill-available;
   max-width:none;
   max-height:none;
   position:fixed;
@@ -111,28 +109,16 @@ body{
     radial-gradient(circle at 86% 18%,rgba(0,245,212,.18),transparent 34%),
     radial-gradient(circle at 50% 100%,rgba(255,209,102,.13),transparent 42%),
     linear-gradient(180deg,#120B2E 0%, var(--bg) 42%, #061B22 100%);
-  padding-left:var(--sl);
-  padding-right:var(--sr);
 }
-@supports (height:100dvh){
-  #app{height:100dvh;min-height:100dvh;}
+@supports (-webkit-touch-callout:none){
+  html{min-height:-webkit-fill-available;}
+  body{min-height:-webkit-fill-available;}
+  #app{min-height:-webkit-fill-available;}
 }
-/* Desktop preview only: show the app centered in an iPhone 16 Pro Max frame.
-   On the actual iPhone, it uses the full real screen and will not crop. */
-@media (min-width:700px){
-  body{display:flex;justify-content:center;align-items:center}
-  #app{
-    position:relative;
-    inset:auto;
-    width:min(100vw,var(--iphone-w));
-    height:min(100vh,var(--iphone-h));
-    border-radius:34px;
-    box-shadow:0 20px 80px rgba(0,0,0,.55);
-  }
-}
+
 /* ── TOPBAR ─────────────────────────────────────────────────────────── */
 .topbar{
-  padding:calc(var(--st) + 14px) 20px 14px;
+  padding:calc(var(--st) + 38px) 20px 14px;
   background:linear-gradient(135deg,rgba(18,11,46,.96),rgba(6,27,34,.94));
   border-bottom:0.5px solid var(--b1);
   flex-shrink:0;
@@ -163,7 +149,7 @@ body{
   overflow-y:auto;
   overflow-x:hidden;
   -webkit-overflow-scrolling:touch;
-  padding:0 18px calc(18px + var(--sb));
+  padding:0 18px calc(104px + var(--sb));
   overscroll-behavior:contain;
   background:transparent;
 }
@@ -172,23 +158,21 @@ body{
 /* ── BOTTOM NAV ─────────────────────────────────────────────────────── */
 .nav{
   display:flex;
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  width:100%;
   background:linear-gradient(135deg,rgba(26,24,64,1),rgba(10,40,48,1));
   border-top:0.5px solid rgba(255,255,255,.10);
-  padding-bottom:0;
+  padding-top:10px;
+  padding-bottom:calc(var(--sb) + 8px);
   flex-shrink:0;
   backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  position:relative;
-  z-index:20;
+  z-index:999;
   box-shadow:0 -18px 40px rgba(0,0,0,.28);
 }
-.nav::after{
-  content:"";
-  position:absolute;
-  left:0;right:0;top:100%;
-  height:var(--sb);
-  background:linear-gradient(135deg,rgba(26,24,64,1),rgba(10,40,48,1));
-  pointer-events:none;
-}
+.nav::after{display:none}
 .nb{
   flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;
   padding:12px 4px calc(10px + var(--sb));border:none;background:transparent;cursor:pointer;
