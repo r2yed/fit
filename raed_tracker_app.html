@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="RaedFit">
@@ -57,8 +57,8 @@
   --sr:env(safe-area-inset-right,0px);
 
   /* iPhone 16 Pro Max target: 430 × 932 CSS px */
-  --iphone-w:430px;
-  --iphone-h:932px;
+  --iphone-w:440px;
+  --iphone-h:956px;
   --vh:100dvh;
 
   --f:'DM Sans',system-ui,sans-serif;
@@ -78,6 +78,7 @@ body{
   width:100%;
   height:100%;
   min-height:100%;
+  margin:0;
   background:var(--bg);
   color:var(--txt);
   font-family:var(--f);
@@ -85,33 +86,35 @@ body{
   overflow:hidden;
   overscroll-behavior:none;
   -webkit-text-size-adjust:100%;
-  display:flex;
-  justify-content:center;
 }
 #app{
   display:flex;
   flex-direction:column;
-  width:100vw;
-  max-width:var(--iphone-w);
-  height:var(--vh);
-  max-height:var(--iphone-h);
-  min-height:100svh;
-  position:relative;
+  width:100%;
+  height:var(--vh,100dvh);
+  min-height:0;
+  max-width:none;
+  max-height:none;
+  position:fixed;
+  inset:0;
   overflow:hidden;
   background:var(--bg);
   padding-left:var(--sl);
   padding-right:var(--sr);
 }
-@supports (height:100dvh){
-  #app{height:100dvh}
+/* Desktop preview only: show the app centered in an iPhone 16 Pro Max frame.
+   On the actual iPhone, it uses the full real screen and will not crop. */
+@media (min-width:700px){
+  body{display:flex;justify-content:center;align-items:center}
+  #app{
+    position:relative;
+    inset:auto;
+    width:min(100vw,var(--iphone-w));
+    height:min(100vh,var(--iphone-h));
+    border-radius:34px;
+    box-shadow:0 20px 80px rgba(0,0,0,.55);
+  }
 }
-@media (max-width:430px){
-  #app{max-width:none;max-height:none}
-}
-@media (orientation:landscape){
-  #app{max-width:430px}
-}
-
 /* ── TOPBAR ─────────────────────────────────────────────────────────── */
 .topbar{
   padding:calc(var(--st) + 14px) 20px 14px;
@@ -139,7 +142,7 @@ body{
 }
 
 /* ── SCROLL ─────────────────────────────────────────────────────────── */
-.scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:0 18px calc(32px + var(--sb));overscroll-behavior:contain}
+.scroll{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:0 18px calc(32px + var(--sb));overscroll-behavior:contain}
 .scroll::-webkit-scrollbar{display:none}
 
 /* ── BOTTOM NAV ─────────────────────────────────────────────────────── */
@@ -160,6 +163,7 @@ body{
 .nb.on{color:var(--violet)}
 .nb.on svg{filter:drop-shadow(0 0 6px rgba(124,92,252,.5))}
 .nb svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+@media (max-width:380px){.nb{font-size:9px;padding-left:2px;padding-right:2px}.nb svg{width:20px;height:20px}.scroll{padding-left:14px;padding-right:14px}}
 
 /* ── SCREENS ─────────────────────────────────────────────────────────── */
 .sc{display:none;padding-top:18px}.sc.on{display:block}
@@ -1358,13 +1362,9 @@ function setIPhoneViewport(){
 }
 setIPhoneViewport();
 window.addEventListener('resize', setIPhoneViewport);
+window.addEventListener('orientationchange', setIPhoneViewport);
 if(window.visualViewport){window.visualViewport.addEventListener('resize', setIPhoneViewport);}
 
-load();
-
-</script>
-</body>
-</html
 function setTodayDate(v){
   if(!v)return;
   D.selectedDate=v;
@@ -1375,4 +1375,9 @@ function setTodayDate(v){
 }
 function setTodayDay(v){D.ad=parseInt(v)||1;save();renderToday();renderDR();renderDB();}
 function setSleepToday(v){D.sleepToday=v;save();}
->
+
+load();
+
+</script>
+</body>
+</html>
