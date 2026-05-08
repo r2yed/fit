@@ -795,14 +795,14 @@ body{
     </div>
     <div class="sc" id="sc-cal">
       <div class="cal-summary" id="cal-summary"></div>
-      <div class="lbl">12-week journey</div>
+      <div class="lbl">12-week flexible journey</div>
       <div class="cal-col-headers">
         <div></div>
-        <div class="cal-col-hdr">D1 Sun</div>
-        <div class="cal-col-hdr">D2 Mon</div>
-        <div class="cal-col-hdr">D3 Tue</div>
-        <div class="cal-col-hdr">D4 Thu</div>
-        <div class="cal-col-hdr">D5 Fri</div>
+        <div class="cal-col-hdr">Day 1</div>
+        <div class="cal-col-hdr">Day 2</div>
+        <div class="cal-col-hdr">Day 3</div>
+        <div class="cal-col-hdr">Day 4</div>
+        <div class="cal-col-hdr">Day 5</div>
       </div>
       <div id="cal-grid"></div>
       <div class="cal-legend">
@@ -979,7 +979,7 @@ var YT={
 
 var DC=['#7C5CFC','#4D9FFF','#FF6CB5','#FF4D6D','#FFB830'];
 var DAYS=[
-  {id:1,label:'Day 1',name:'Push',sub:'Chest \u00b7 Shoulders \u00b7 Triceps',day:'Sun',color:'#7C5CFC',ex:[
+  {id:1,label:'Day 1',name:'Push',sub:'Chest \u00b7 Shoulders \u00b7 Triceps',color:'#7C5CFC',ex:[
     {id:'e1',name:'Incline DB Press',  tS:4,tR:12,tip:'Elbows 45\u00b0. Squeeze chest at top. Slow descent.'},
     {id:'e2',name:'Flat DB Flye',      tS:3,tR:12,tip:'Wide arc. Deep stretch bottom, hard squeeze top.'},
     {id:'e3',name:'DB Shoulder Press', tS:4,tR:12,tip:'Core tight. Control lowering. Do not lock elbows.'},
@@ -987,7 +987,7 @@ var DAYS=[
     {id:'e5',name:'Tricep Pushdown',   tS:3,tR:15,tip:'Elbows pinned. Full extension. Slow return.'},
     {id:'e6',name:'Bench Dip',         tS:3,tR:12,tip:'Body upright. Lower to 90\u00b0 elbow bend.'},
   ]},
-  {id:2,label:'Day 2',name:'Pull',sub:'Back \u00b7 Biceps \u00b7 Rear Delts',day:'Mon',color:'#4D9FFF',ex:[
+  {id:2,label:'Day 2',name:'Pull',sub:'Back \u00b7 Biceps \u00b7 Rear Delts',color:'#4D9FFF',ex:[
     {id:'e7', name:'Barbell Row',       tS:4,tR:12,tip:'Hinge 45\u00b0. Pull to lower chest. Squeeze blades.'},
     {id:'e8', name:'One-Arm DB Row',    tS:3,tR:12,tip:'Brace on bench. Pull elbow past body.'},
     {id:'e9', name:'Neutral Pulldown',  tS:3,tR:12,tip:'Pull to upper chest. Lean back slightly.'},
@@ -995,7 +995,7 @@ var DAYS=[
     {id:'e11',name:'Barbell Curl',      tS:3,tR:12,tip:'No swinging. Full ROM. Hard squeeze at top.'},
     {id:'e12',name:'Hammer Curl',       tS:3,tR:12,tip:'Neutral grip. Alternate arms. Control it.'},
   ]},
-  {id:3,label:'Day 3',name:'Legs',sub:'Quads \u00b7 Hams \u00b7 Calves \u00b7 Abs',day:'Tue',color:'#FF6CB5',ex:[
+  {id:3,label:'Day 3',name:'Legs',sub:'Quads \u00b7 Hams \u00b7 Calves \u00b7 Abs',color:'#FF6CB5',ex:[
     {id:'e13',name:'Squat',             tS:4,tR:10,tip:'Knees track toes. Below parallel. Drive heels.'},
     {id:'e14',name:'Romanian Deadlift', tS:3,tR:12,tip:'Push hips back. Feel the hamstring stretch.'},
     {id:'e15',name:'DB Lunge',          tS:3,tR:12,tip:'Long step. Front knee over ankle. Upright.'},
@@ -1003,7 +1003,7 @@ var DAYS=[
     {id:'e17',name:'Calf Raise',        tS:4,tR:20,tip:'Full stretch at bottom. Hold squeeze at top.'},
     {id:'e18',name:'Abs Circuit',       tS:3,tR:25,tip:'A1 Crunch \u00b7 A2 Leg Raise \u00b7 A3 Rev Crunch \u00b7 A4 Toe Touch'},
   ]},
-  {id:4,label:'Day 4',name:'Push V2',sub:'Chest \u00b7 Shoulders \u00b7 Triceps',day:'Thu',color:'#FF4D6D',ex:[
+  {id:4,label:'Day 4',name:'Push V2',sub:'Chest \u00b7 Shoulders \u00b7 Triceps',color:'#FF4D6D',ex:[
     {id:'e19',name:'DB Bench Press',    tS:4,tR:12,tip:'Full ROM. Touch chest lightly. Drive up explosively.'},
     {id:'e20',name:'Push-Up',           tS:3,tR:15,tip:'Elbows at 45\u00b0. Chest to floor. Explosive push.'},
     {id:'e21',name:'Arnold Press',      tS:3,tR:12,tip:'Rotate palms as you press. Full delt activation.'},
@@ -1011,7 +1011,7 @@ var DAYS=[
     {id:'e23',name:'DB Kickback',       tS:3,tR:15,tip:'Upper arm parallel. Full extension. Hard squeeze.'},
     {id:'e24',name:'Close-Grip Push-Up',tS:3,tR:15,tip:'Hands below shoulders. Elbows travel back.'},
   ]},
-  {id:5,label:'Day 5',name:'Pull V2',sub:'Back \u00b7 Biceps \u00b7 Abs',day:'Fri',color:'#FFB830',ex:[
+  {id:5,label:'Day 5',name:'Pull V2',sub:'Back \u00b7 Biceps \u00b7 Abs',color:'#FFB830',ex:[
     {id:'e25',name:'Deadlift',          tS:3,tR:8, tip:'Bar close to shins. Drive floor away. Lock hips.'},
     {id:'e26',name:'Wide Pulldown',     tS:3,tR:12,tip:'Wide grip. Pull to upper chest. Slow negative.'},
     {id:'e27',name:'Seated Cable Row',  tS:3,tR:12,tip:'Sit upright. Pull to lower chest. Hold 1 sec.'},
@@ -1073,17 +1073,13 @@ function showTab(t){
 function renderToday(){
   if(!D.selectedDate)D.selectedDate=todayISO();
   var now=new Date(D.selectedDate+'T00:00:00');
-  var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  document.getElementById('today-date').textContent=days[now.getDay()]+' '+now.getDate()+' '+months[now.getMonth()]+' — selected plan day';
-  var dayOfWeek=now.getDay();
-  var dayMap={0:1,1:2,2:3,4:4,5:5};
-  var suggestedId=dayMap[dayOfWeek]!==undefined?dayMap[dayOfWeek]:null;
-  if(!D.ad && suggestedId)D.ad=suggestedId;
+  document.getElementById('today-date').textContent=now.getDate()+' '+months[now.getMonth()]+' — choose any workout day';
+  if(!D.ad)D.ad=1;
   var selectedDay=DAYS.find(function(d){return d.id===D.ad;});
   var lastSess=null;
   if(selectedDay){for(var i=D.sessions.length-1;i>=0;i--){if(D.sessions[i].dayId===selectedDay.id){lastSess=D.sessions[i];break;}}}
-  var options=DAYS.map(function(d){return '<option value="'+d.id+'" '+(D.ad===d.id?'selected':'')+'>Day '+d.id+' — '+d.name+' ('+d.day+')</option>';}).join('');
+  var options=DAYS.map(function(d){return '<option value="'+d.id+'" '+(D.ad===d.id?'selected':'')+'>Day '+d.id+' — '+d.name+'</option>';}).join('');
   var tc=document.getElementById('today-card');
   var controls='<div class="today-controls">'
     +'<div class="today-controls-title">Choose workout date & day</div>'
@@ -1098,7 +1094,7 @@ function renderToday(){
     var c=selectedDay.color;
     tc.innerHTML=controls+'<div class="today-card" style="background:linear-gradient(135deg,'+hexA(c,15)+',rgba(0,0,0,.02));border-color:'+hexA(c,35)+'">'
       +'<div class="today-title" style="color:'+c+'">Selected: '+selectedDay.name+' — Day '+selectedDay.id+'</div>'
-      +'<div class="today-sub">'+selectedDay.sub+' · '+selectedDay.day+' · '+isoToDisplay(D.selectedDate)+'</div>'
+      +'<div class="today-sub">'+selectedDay.sub+' · '+isoToDisplay(D.selectedDate)+'</div>'
       +'<div class="mini-stats">'
       +'<div class="ms"><div class="ms-v" style="color:'+c+'">'+(lastSess?lastSess.pct+'%':'New')+'</div><div class="ms-l">Last session</div></div>'
       +'<div class="ms"><div class="ms-v" style="color:var(--amber)">'+D.sessions.length+'/60</div><div class="ms-l">Total done</div></div>'
@@ -1188,7 +1184,7 @@ function renderDR(){
     h+='<div class="dc'+(on?' on':'')+'" style="'+(on?'border-color:'+d.color+';background:'+hexA(d.color,10):'')+'" onclick="selDay('+d.id+')">'
       +'<div class="dc-n">'+d.label+'</div>'
       +'<div class="dc-name" style="'+(on?'color:'+d.color:'')+'">'+d.name+(done?' \u2713':'')+'</div>'
-      +'<div class="dc-day">'+d.day+'</div></div>';
+      +'<div class="dc-day">Flexible</div></div>';
   });
   document.getElementById('day-row').innerHTML=h;
 }
@@ -1227,7 +1223,7 @@ function renderDB(){
   var day=DAYS.find(function(d){return d.id===D.ad;});
   var c=day.color,dp=dayPct(day);
   var h='<div class="day-hdr" style="background:'+hexA(c,8)+';border-color:'+hexA(c,25)+'">'
-    +'<div class="dh-top"><div><div class="dh-name" style="color:'+c+'">'+day.name+'</div><div class="dh-sub">'+day.sub+' \u00b7 '+day.day+'</div></div>'
+    +'<div class="dh-top"><div><div class="dh-name" style="color:'+c+'">'+day.name+'</div><div class="dh-sub">'+day.sub+'</div></div>'
     +'<div class="dh-pctw"><div class="dh-pct" id="day-pct" style="color:'+pc(dp)+'">'+dp+'%</div><div class="dh-pct-l">completed</div></div></div>'
     +'<div class="dh-bar"><div class="dh-bar-f" id="day-bar" style="width:'+dp+'%;background:'+c+'"></div></div></div>';
   day.ex.forEach(function(ex){
