@@ -1449,10 +1449,10 @@ function renderCal(){
           col=day?day.color:'var(--violet)';
           main=(sess.pct||0)+'%';
         }
-        html+='<div class="cal-slot done" style="background:'+col+';cursor:pointer" onclick="openSessFromDate(''+iso+'')">'
+        html+="<div class=\"cal-slot done\" style=\"background:"+col+";cursor:pointer\" onclick=\"openSessFromDate('"+iso+"')\">"
           +'<div class="cs-d">'+(type==='workout'?'D'+(sess.dayId||''):type.toUpperCase())+'</div><div class="cs-p">'+main+'</div><div class="cs-dt">'+sub+'</div></div>';
       } else {
-        html+='<div class="cal-slot" style="cursor:pointer" onclick="openDateChoice(''+iso+'')">'
+        html+="<div class=\"cal-slot\" style=\"cursor:pointer\" onclick=\"openDateChoice('"+iso+"')\">"
           +'<div style="font-size:10px;color:var(--txt3);font-family:var(--f)">'+short+'</div>'
           +'<div style="font-size:10px;color:var(--cyan);font-weight:700;font-family:var(--f)">Choose</div></div>';
       }
@@ -1472,16 +1472,17 @@ function openDateChoice(iso){
   }
   var sh=document.getElementById('date-sheet');
   var dayBtns=DAYS.map(function(d){
-    return '<button class="confirm-btn" style="margin-bottom:8px;background:linear-gradient(135deg,'+d.color+','+shiftColor(d.color)+')" onclick="startWorkoutForDate(''+iso+'','+d.id+')">Day '+d.id+' — '+d.name+'</button>';
+    return `<button class="confirm-btn" style="margin-bottom:8px;background:linear-gradient(135deg,${d.color},${shiftColor(d.color)})" onclick="startWorkoutForDate('${iso}',${d.id})">Day ${d.id} — ${d.name}</button>`;
   }).join('');
-  sh.innerHTML='<div class="handle"></div>'
-    +'<div style="font-size:22px;font-weight:700;color:var(--cyan);margin-bottom:4px">Choose this date</div>'
-    +'<div style="font-size:15px;color:var(--txt3);margin-bottom:18px">'+isoToDisplay(iso)+'<br>Only one choice can be saved for each date.</div>'
-    +'<div class="lbl">Workout day</div>'+dayBtns
-    +'<div class="lbl" style="margin-top:12px">Other day type</div>'
-    +'<button class="confirm-btn" style="margin-bottom:8px;background:linear-gradient(135deg,var(--cyan),var(--blue))" onclick="saveSpecialDay(''+iso+'','bike')">🚴 Bike Day</button>'
-    +'<button class="confirm-btn" style="margin-bottom:12px;background:linear-gradient(135deg,var(--green),var(--cyan))" onclick="saveSpecialDay(''+iso+'','rest')">😴 Rest Day</button>'
-    +'<button class="cancel-btn" onclick="closeDatePicker()">Cancel</button>';
+  sh.innerHTML=`
+    <div class="handle"></div>
+    <div style="font-size:22px;font-weight:700;color:var(--cyan);margin-bottom:4px">Choose this date</div>
+    <div style="font-size:15px;color:var(--txt3);margin-bottom:18px">${isoToDisplay(iso)}<br>Only one choice can be saved for each date.</div>
+    <div class="lbl">Workout day</div>${dayBtns}
+    <div class="lbl" style="margin-top:12px">Other day type</div>
+    <button class="confirm-btn" style="margin-bottom:8px;background:linear-gradient(135deg,var(--cyan),var(--blue))" onclick="saveSpecialDay('${iso}','bike')">🚴 Bike Day</button>
+    <button class="confirm-btn" style="margin-bottom:12px;background:linear-gradient(135deg,var(--green),var(--cyan))" onclick="saveSpecialDay('${iso}','rest')">😴 Rest Day</button>
+    <button class="cancel-btn" onclick="closeDatePicker()">Cancel</button>`;
   document.getElementById('date-overlay').style.display='flex';
 }
 function startWorkoutForDate(iso,dayId){
