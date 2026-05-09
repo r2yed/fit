@@ -395,9 +395,9 @@ body{
 .cal-sum-row:last-child{margin-bottom:0}
 .cal-sum-label{font-size:14px;color:var(--txt3)}
 .cal-sum-val{font-size:15px;font-weight:600}
-.cal-col-headers{display:grid;grid-template-columns:38px repeat(5,1fr);gap:4px;margin-bottom:6px}
+.cal-col-headers{display:grid;grid-template-columns:38px repeat(7,1fr);gap:4px;margin-bottom:6px}
 .cal-col-hdr{font-size:10px;color:var(--txt3);text-align:center;letter-spacing:.04em;text-transform:uppercase}
-.week-row{display:grid;grid-template-columns:38px repeat(5,1fr);gap:4px;margin-bottom:4px;align-items:center}
+.week-row{display:grid;grid-template-columns:38px repeat(7,1fr);gap:4px;margin-bottom:4px;align-items:center}
 .week-label{font-size:11px;font-weight:600;color:var(--txt3);text-align:center}
 .cal-slot{
   aspect-ratio:1;border-radius:12px;display:flex;flex-direction:column;
@@ -415,24 +415,6 @@ body{
 .cal-legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;padding:14px;background:var(--c1);border-radius:16px;border:0.5px solid var(--b1)}
 .cal-leg-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--txt3)}
 .cal-leg-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
-
-
-/* ── FLEXIBLE DAILY CALENDAR ─────────────────────────────────────────── */
-.cal-day-list{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
-.cal-day-row2{display:grid;grid-template-columns:64px 1fr;gap:10px;align-items:stretch;background:var(--c1);border:0.5px solid var(--b1);border-radius:18px;padding:10px;cursor:pointer}
-.cal-day-row2.locked{cursor:pointer}
-.cal-date-box{border-radius:14px;background:var(--c2);border:0.5px solid var(--b2);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:62px}
-.cal-date-day{font-size:22px;font-weight:800;line-height:1}
-.cal-date-mon{font-size:11px;color:var(--txt3);font-weight:700;text-transform:uppercase;margin-top:4px}
-.cal-date-body{display:flex;flex-direction:column;justify-content:center;gap:5px;min-width:0}
-.cal-date-title{font-size:15px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cal-date-meta{font-size:12px;color:var(--txt3);line-height:1.4}
-.cal-date-pill{display:inline-block;font-size:11px;font-weight:800;padding:3px 9px;border-radius:20px;margin-right:6px}
-.cal-empty{color:var(--txt3)}
-.activity-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
-.activity-btn{padding:14px 10px;border-radius:15px;border:0.5px solid var(--b2);background:var(--c2);color:var(--txt2);font-size:14px;font-weight:800;font-family:var(--f);cursor:pointer}
-.activity-btn.on{border-color:var(--cyan);color:var(--cyan);background:rgba(0,212,170,.12)}
-.rest-bike-note{font-size:13px;color:var(--txt3);line-height:1.6;margin:10px 0 14px}
 
 /* ── PROGRESS ─────────────────────────────────────────────────────────── */
 .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
@@ -813,7 +795,17 @@ body{
     </div>
     <div class="sc" id="sc-cal">
       <div class="cal-summary" id="cal-summary"></div>
-      <div class="lbl">Flexible calendar — one choice per date</div>
+      <div class="lbl">Flexible calendar — choose one item per date</div>
+      <div class="cal-col-headers">
+        <div></div>
+        <div class="cal-col-hdr">1</div>
+        <div class="cal-col-hdr">2</div>
+        <div class="cal-col-hdr">3</div>
+        <div class="cal-col-hdr">4</div>
+        <div class="cal-col-hdr">5</div>
+        <div class="cal-col-hdr">6</div>
+        <div class="cal-col-hdr">7</div>
+      </div>
       <div id="cal-grid"></div>
       <div class="cal-legend">
         <div class="cal-leg-item"><div class="cal-leg-dot" style="background:var(--violet)"></div>Day 1 Push</div>
@@ -821,8 +813,9 @@ body{
         <div class="cal-leg-item"><div class="cal-leg-dot" style="background:var(--pink)"></div>Day 3 Legs</div>
         <div class="cal-leg-item"><div class="cal-leg-dot" style="background:var(--coral)"></div>Day 4 Push V2</div>
         <div class="cal-leg-item"><div class="cal-leg-dot" style="background:var(--amber)"></div>Day 5 Pull V2</div>
-        <div class="cal-leg-item"><div class="cal-leg-dot" style="background:var(--green)"></div>Bike Day</div>
-        <div class="cal-leg-item"><div class="cal-leg-dot" style="background:var(--b2)"></div>Rest Day</div>
+        <div class="cal-leg-item"><div class="cal-leg-dot" style="background:var(--cyan)"></div>Bike Day</div>
+        <div class="cal-leg-item"><div class="cal-leg-dot" style="background:var(--green)"></div>Rest Day</div>
+        <div class="cal-leg-item"><div class="cal-leg-dot" style="background:var(--b2)"></div>Open date</div>
       </div>
     </div>
     <div class="sc" id="sc-prog">
@@ -1085,49 +1078,39 @@ function renderToday(){
   if(!D.selectedDate)D.selectedDate=todayISO();
   var now=new Date(D.selectedDate+'T00:00:00');
   var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  var existing=activityForDate(D.selectedDate);
-  document.getElementById('today-date').textContent=now.getDate()+' '+months[now.getMonth()]+' — flexible program';
+  document.getElementById('today-date').textContent=now.getDate()+' '+months[now.getMonth()]+' — choose any workout day';
   if(!D.ad)D.ad=1;
   var selectedDay=DAYS.find(function(d){return d.id===D.ad;});
   var lastSess=null;
-  if(selectedDay){for(var i=D.sessions.length-1;i>=0;i--){if(D.sessions[i].dayId===selectedDay.id&&D.sessions[i].type!=='rest'&&D.sessions[i].type!=='bike'){lastSess=D.sessions[i];break;}}}
+  if(selectedDay){for(var i=D.sessions.length-1;i>=0;i--){if(D.sessions[i].dayId===selectedDay.id){lastSess=D.sessions[i];break;}}}
   var options=DAYS.map(function(d){return '<option value="'+d.id+'" '+(D.ad===d.id?'selected':'')+'>Day '+d.id+' — '+d.name+'</option>';}).join('');
-  var locked=!!existing;
-  var lockMsg=locked?'<div class="rest-bike-note" style="color:var(--amber)">This date already has <b>'+activityLabel(existing)+'</b>. To choose another day, delete/edit that saved entry first.</div>':'';
-  var controls='<div class="today-controls">'
-    +'<div class="today-controls-title">1) Choose the date</div>'
-    +'<input class="today-date-input" type="date" id="today-plan-date" value="'+D.selectedDate+'" onchange="setTodayDate(this.value)">'
-    +'<div class="today-controls-title" style="margin-top:14px">2) Choose what this date is</div>'
-    +'<div class="activity-grid">'
-    +'<button class="activity-btn on" onclick="setActivityMode(&quot;workout&quot;)">Workout Day</button>'
-    +'<button class="activity-btn" onclick="setActivityMode(&quot;rest&quot;)">Rest Day</button>'
-    +'<button class="activity-btn" onclick="setActivityMode(&quot;bike&quot;)">Bike Day</button>'
-    +'</div>'
-    +'<select class="today-select" id="today-plan-day" onchange="setTodayDay(this.value)" '+(locked?'disabled':'')+'>'+options+'</select>'
-    +'<div class="rest-bike-note">Use the buttons above. A date can only have one choice: workout, rest, or bike.</div>'
-    +'<div class="sleep-mini"><label>Sleep that day / hours</label><input class="sleep-input" type="number" id="today-sleep" placeholder="Example: 6.5" step="0.25" min="0" max="24" inputmode="decimal" value="'+(D.sleepToday||'')+'" oninput="setSleepToday(this.value)"></div>'
-    +lockMsg
-    +'</div>';
   var tc=document.getElementById('today-card');
-  if(locked){
-    var c=activityColor(existing);
-    tc.innerHTML=controls+'<div class="today-card" style="background:linear-gradient(135deg,'+(c[0]==='#'?hexA(c,15):'rgba(255,255,255,.05)')+',rgba(0,0,0,.02));border-color:'+(c[0]==='#'?hexA(c,35):'rgba(255,255,255,.12)')+'">'
-      +'<div class="today-title" style="color:'+c+'">Saved: '+activityLabel(existing)+'</div>'
-      +'<div class="today-sub">'+isoToDisplay(D.selectedDate)+(existing.sleep?' · '+existing.sleep+'h sleep':'')+'</div>'
-      +'<button class="gbtn" onclick="openActivityByDate(&quot;'+D.selectedDate+'&quot;)">Open saved entry</button>'
-      +'</div>';
-  }else if(selectedDay){
+  var controls='<div class="today-controls">'
+    +'<div class="today-controls-title">Choose workout date & day</div>'
+    +'<div class="today-pick-grid">'
+    +'<input class="today-date-input" type="date" id="today-plan-date" value="'+D.selectedDate+'" onchange="setTodayDate(this.value)">'
+    +'<select class="today-select" id="today-plan-day" onchange="setTodayDay(this.value)">'+options+'</select>'
+    +'</div>'
+    +'<div style="font-size:12px;color:var(--txt3);line-height:1.5">Date auto-suggests the workout day. You can still override the day manually.</div>'
+    +'<div class="sleep-mini"><label>Sleep that day / hours</label><input class="sleep-input" type="number" id="today-sleep" placeholder="Example: 6.5" step="0.25" min="0" max="24" inputmode="decimal" value="'+(D.sleepToday||'')+'" oninput="setSleepToday(this.value)"></div>'
+    +'</div>';
+  if(selectedDay){
     var c=selectedDay.color;
     tc.innerHTML=controls+'<div class="today-card" style="background:linear-gradient(135deg,'+hexA(c,15)+',rgba(0,0,0,.02));border-color:'+hexA(c,35)+'">'
       +'<div class="today-title" style="color:'+c+'">Selected: '+selectedDay.name+' — Day '+selectedDay.id+'</div>'
       +'<div class="today-sub">'+selectedDay.sub+' · '+isoToDisplay(D.selectedDate)+'</div>'
       +'<div class="mini-stats">'
       +'<div class="ms"><div class="ms-v" style="color:'+c+'">'+(lastSess?lastSess.pct+'%':'New')+'</div><div class="ms-l">Last session</div></div>'
-      +'<div class="ms"><div class="ms-v" style="color:var(--amber)">'+D.sessions.filter(function(s){return s.type!=='rest'&&s.type!=='bike';}).length+'</div><div class="ms-l">Workouts</div></div>'
+      +'<div class="ms"><div class="ms-v" style="color:var(--amber)">'+D.sessions.length+'/60</div><div class="ms-l">Total done</div></div>'
       +'<div class="ms"><div class="ms-v" style="color:var(--cyan)">'+(D.sleepToday?D.sleepToday+'h':'—')+'</div><div class="ms-l">Sleep</div></div>'
       +'</div>'
       +'<button class="start-btn" style="background:linear-gradient(135deg,'+c+','+shiftColor(c)+')" onclick="startSession('+selectedDay.id+')">Start '+selectedDay.name+' →</button>'
       +'</div>';
+  } else {
+    tc.innerHTML=controls+'<div class="today-card" style="background:linear-gradient(135deg,rgba(46,204,142,.08),rgba(0,0,0,.02));border-color:rgba(46,204,142,.2)">'
+      +'<div class="today-title" style="color:var(--green)">Rest / No gym day</div>'
+      +'<div class="today-sub">'+isoToDisplay(D.selectedDate)+'</div>'
+      +'<div style="font-size:14px;color:var(--txt3);margin-top:10px;line-height:1.7">Pick a workout day above if you trained anyway.</div></div>';
   }
   var alerts=[];
   AEX.forEach(function(ex){
@@ -1149,48 +1132,7 @@ function shiftColor(hex){
   };
   return shifts[hex]||'#00D4AA';
 }
-function activityForDate(iso){
-  return D.sessions.find(function(s){return s.isoDate===iso;})||null;
-}
-function activityIndexForDate(iso){
-  return D.sessions.findIndex(function(s){return s.isoDate===iso;});
-}
-function activityLabel(s){
-  if(!s)return 'Open';
-  if(s.type==='rest')return 'Rest Day';
-  if(s.type==='bike')return 'Bike Day';
-  return 'Day '+s.dayId+' — '+(s.dayName||'Workout');
-}
-function activityColor(s){
-  if(!s)return 'var(--txt3)';
-  if(s.type==='rest')return 'var(--b3)';
-  if(s.type==='bike')return 'var(--green)';
-  var d=DAYS.find(function(x){return x.id===s.dayId;});
-  return d?d.color:'var(--violet)';
-}
-function saveSimpleDay(type,iso){
-  iso=iso||D.selectedDate||todayISO();
-  var existing=activityForDate(iso);
-  if(existing){alert('This date already has '+activityLabel(existing)+'. Delete or edit it first before choosing another day.');return;}
-  if(!D.startDate)D.startDate=iso;
-  var name=type==='bike'?'Bike Day':'Rest Day';
-  D.sessions.push({type:type,date:isoToDisplay(iso),isoDate:iso,dayId:null,dayName:name,week:D.week,pct:100,feel:D.feelToday||'',sleep:D.sleepToday||'',exData:null});
-  D.sessions.sort(function(a,b){return (a.isoDate||'').localeCompare(b.isoDate||'');});
-  D.feelToday=null;D.sleepToday='';
-  save();updH();renderCal();renderSH();renderToday();
-}
-function chooseCalendarDate(iso){
-  D.selectedDate=iso;save();renderToday();showTab('today');
-}
-function openActivityByDate(iso){
-  var i=activityIndexForDate(iso);
-  if(i<0){chooseCalendarDate(iso);return;}
-  var s=D.sessions[i];
-  if(s.type==='rest'||s.type==='bike'){
-    if(confirm(activityLabel(s)+' is already saved for '+s.date+'. Delete it?')){delSess(i);renderCal();}
-  }else{openEdit(i);}
-}
-function startSession(dayId){var existing=activityForDate(D.selectedDate||todayISO());if(existing){alert('This date already has '+activityLabel(existing)+'. Delete or edit it first before choosing another day.');return;}D.ad=dayId;save();showFatigue(dayId);}
+function startSession(dayId){D.ad=dayId;save();showFatigue(dayId);}
 
 /* FATIGUE */
 var pendingDayId=null,selectedFeel=null;
@@ -1401,8 +1343,12 @@ function showDatePicker(){
   document.getElementById('date-overlay').style.display='flex';
 }
 function closeDatePicker(){document.getElementById('date-overlay').style.display='none';}
-function confirmDate(){var iso=document.getElementById('sess-date').value;if(!iso){alert('Please pick a date');return;}var existing=activityForDate(iso);if(existing){alert('This date already has '+activityLabel(existing)+'. Delete or edit it first before saving another choice.');return;}closeDatePicker();doComplete(iso);}
+function confirmDate(){var iso=document.getElementById('sess-date').value;if(!iso){alert('Please pick a date');return;}closeDatePicker();doComplete(iso);}
 function doComplete(iso){
+  if(sessionOnDate(iso)){
+    alert('This date already has a saved choice. Delete or edit that day first.');
+    return;
+  }
   var day=DAYS.find(function(d){return d.id===D.ad;});
   var exData={};
 
@@ -1427,8 +1373,7 @@ function doComplete(iso){
   if(!D.startDate)D.startDate=iso;
   var feel=D.feelToday;D.feelToday=null;
   var sleep=D.sleepToday||'';D.sleepToday='';
-  D.sessions.push({type:'workout',date:isoToDisplay(iso),isoDate:iso,dayId:day.id,dayName:day.name,week:D.week,exData:exData,pct:finalPct,feel:feel,sleep:sleep});
-  D.sessions.sort(function(a,b){return (a.isoDate||'').localeCompare(b.isoDate||'');});
+  D.sessions.push({date:isoToDisplay(iso),isoDate:iso,dayId:day.id,dayName:day.name,week:D.week,exData:exData,pct:finalPct,feel:feel,sleep:sleep});
   D.ox=null;save();updH();renderDR();renderDB();renderSH();renderToday();
 }
 
@@ -1459,47 +1404,127 @@ function closePlan(){document.getElementById('plan-overlay').style.display='none
 function planBgClose(e){if(e.target===document.getElementById('plan-overlay'))closePlan();}
 
 /* CALENDAR */
+function addDaysISO(iso,days){
+  var d=new Date(iso+'T00:00:00');
+  d.setDate(d.getDate()+days);
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+function sessionOnDate(iso){
+  return D.sessions.find(function(s){return s.isoDate===iso;});
+}
+function sessionIndexOnDate(iso){
+  return D.sessions.findIndex(function(s){return s.isoDate===iso;});
+}
 function renderCal(){
   var today=todayISO();
-  var workouts=D.sessions.filter(function(s){return s.type!=='rest'&&s.type!=='bike';}).length;
-  var restDays=D.sessions.filter(function(s){return s.type==='rest';}).length;
-  var bikeDays=D.sessions.filter(function(s){return s.type==='bike';}).length;
-  var pct=Math.min(100,Math.round(workouts/60*100));
+  var done=D.sessions.filter(function(s){return s.type!=='rest';}).length;
+  var workoutDone=D.sessions.filter(function(s){return !s.type || s.type==='workout';}).length;
+  var bikeDone=D.sessions.filter(function(s){return s.type==='bike';}).length;
+  var restDone=D.sessions.filter(function(s){return s.type==='rest';}).length;
+  var pct=Math.min(100,Math.round(workoutDone/60*100));
+  var startIso=D.startDate||today;
+  var endIso=addDaysISO(startIso,83);
   document.getElementById('cal-summary').innerHTML=
-    '<div class="cal-sum-row"><div class="cal-sum-label">Workouts completed</div><div class="cal-sum-val" style="color:var(--cyan)">'+workouts+' / 60</div></div>'
-    +'<div class="cal-sum-row"><div class="cal-sum-label">Bike / Rest days</div><div class="cal-sum-val" style="color:var(--green)">'+bikeDays+' bike · '+restDays+' rest</div></div>'
-    +'<div class="cal-sum-row"><div class="cal-sum-label">Overall workout progress</div><div class="cal-sum-val" style="color:'+pc(pct)+'">'+pct+'%</div></div>'
-    +'<div class="cal-sum-row"><div class="cal-sum-label">Started</div><div class="cal-sum-val">'+(D.startDate?isoToDisplay(D.startDate):'Not started yet')+'</div></div>';
-
-  var baseIso=D.startDate||today;
-  var base=new Date(baseIso+'T00:00:00');
-  var daysToShow=Math.max(42,D.sessions.length+14);
-  var html='<div class="cal-day-list">';
-  for(var offset=0;offset<daysToShow;offset++){
-    var dt=new Date(base);dt.setDate(base.getDate()+offset);
-    var iso=dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0');
-    var mon=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][dt.getMonth()];
-    var s=activityForDate(iso);
-    var col=activityColor(s);
-    if(s){
-      var pctText=(s.type==='rest'||s.type==='bike')?'✓':((s.pct||0)+'%');
-      html+='<div class="cal-day-row2 locked" style="border-left:4px solid '+col+'" onclick="openActivityByDate(''+iso+'')">'
-        +'<div class="cal-date-box"><div class="cal-date-day">'+dt.getDate()+'</div><div class="cal-date-mon">'+mon+'</div></div>'
-        +'<div class="cal-date-body"><div class="cal-date-title" style="color:'+col+'">'+activityLabel(s)+'</div>'
-        +'<div class="cal-date-meta"><span class="cal-date-pill" style="background:'+(col[0]==='#'?hexA(col,18):'rgba(255,255,255,.08)')+';color:'+col+'">'+pctText+'</span>'+(s.sleep?s.sleep+'h sleep · ':'')+'Tap to open/delete</div></div></div>';
-    }else{
-      html+='<div class="cal-day-row2" onclick="chooseCalendarDate(''+iso+'')">'
-        +'<div class="cal-date-box"><div class="cal-date-day">'+dt.getDate()+'</div><div class="cal-date-mon">'+mon+'</div></div>'
-        +'<div class="cal-date-body"><div class="cal-date-title cal-empty">Choose workout, rest, or bike</div>'
-        +'<div class="cal-date-meta">Open date · no restriction to weekdays</div></div></div>';
+    '<div class="cal-sum-row"><div class="cal-sum-label">Workout sessions</div><div class="cal-sum-val" style="color:var(--cyan)">'+workoutDone+' / 60</div></div>'
+    +'<div class="cal-sum-row"><div class="cal-sum-label">Bike days</div><div class="cal-sum-val" style="color:var(--blue)">'+bikeDone+'</div></div>'
+    +'<div class="cal-sum-row"><div class="cal-sum-label">Rest days</div><div class="cal-sum-val" style="color:var(--green)">'+restDone+'</div></div>'
+    +'<div class="cal-sum-row"><div class="cal-sum-label">Workout progress</div><div class="cal-sum-val" style="color:'+pc(pct)+'">'+pct+'%</div></div>'
+    +'<div class="cal-sum-row"><div class="cal-sum-label">Started</div><div class="cal-sum-val">'+(D.startDate?isoToDisplay(D.startDate):'Not started yet')+'</div></div>'
+    +'<div class="cal-sum-row"><div class="cal-sum-label">Calendar window</div><div class="cal-sum-val">'+(D.startDate?isoToDisplay(startIso)+' → '+isoToDisplay(endIso):'Starts when you save first day')+'</div></div>';
+  var html='';
+  for(var wk=1;wk<=12;wk++){
+    html+='<div class="week-row"><div class="week-label">W'+wk+'</div>';
+    for(var di=0;di<7;di++){
+      var offset=(wk-1)*7+di;
+      var iso=addDaysISO(startIso,offset);
+      var sess=sessionOnDate(iso);
+      var short=iso.substring(5).replace('-','/');
+      if(sess){
+        var type=sess.type||'workout';
+        var col='var(--violet)',main='✓',sub=short;
+        if(type==='bike'){col='var(--cyan)';main='Bike';}
+        else if(type==='rest'){col='var(--green)';main='Rest';}
+        else {
+          var day=DAYS.find(function(d){return d.id===sess.dayId;});
+          col=day?day.color:'var(--violet)';
+          main=(sess.pct||0)+'%';
+        }
+        html+='<div class="cal-slot done" style="background:'+col+';cursor:pointer" onclick="openSessFromDate(''+iso+'')">'
+          +'<div class="cs-d">'+(type==='workout'?'D'+(sess.dayId||''):type.toUpperCase())+'</div><div class="cs-p">'+main+'</div><div class="cs-dt">'+sub+'</div></div>';
+      } else {
+        html+='<div class="cal-slot" style="cursor:pointer" onclick="openDateChoice(''+iso+'')">'
+          +'<div style="font-size:10px;color:var(--txt3);font-family:var(--f)">'+short+'</div>'
+          +'<div style="font-size:10px;color:var(--cyan);font-weight:700;font-family:var(--f)">Choose</div></div>';
+      }
     }
+    html+='</div>';
   }
-  html+='</div>';
   document.getElementById('cal-grid').innerHTML=html;
 }
-function missedSlot(dayId,wk){D.ad=dayId;showTab('today');}
-function confirmMissed(dayId,wk){alert('Use the Today page to log this date.');}
-
+function openSessFromDate(iso){
+  var i=sessionIndexOnDate(iso);
+  if(i>=0)openEdit(i);
+}
+function openDateChoice(iso){
+  if(sessionOnDate(iso)){
+    alert('This date already has a saved choice. Delete or edit it first.');
+    return;
+  }
+  var sh=document.getElementById('date-sheet');
+  var dayBtns=DAYS.map(function(d){
+    return '<button class="confirm-btn" style="margin-bottom:8px;background:linear-gradient(135deg,'+d.color+','+shiftColor(d.color)+')" onclick="startWorkoutForDate(''+iso+'','+d.id+')">Day '+d.id+' — '+d.name+'</button>';
+  }).join('');
+  sh.innerHTML='<div class="handle"></div>'
+    +'<div style="font-size:22px;font-weight:700;color:var(--cyan);margin-bottom:4px">Choose this date</div>'
+    +'<div style="font-size:15px;color:var(--txt3);margin-bottom:18px">'+isoToDisplay(iso)+'<br>Only one choice can be saved for each date.</div>'
+    +'<div class="lbl">Workout day</div>'+dayBtns
+    +'<div class="lbl" style="margin-top:12px">Other day type</div>'
+    +'<button class="confirm-btn" style="margin-bottom:8px;background:linear-gradient(135deg,var(--cyan),var(--blue))" onclick="saveSpecialDay(''+iso+'','bike')">🚴 Bike Day</button>'
+    +'<button class="confirm-btn" style="margin-bottom:12px;background:linear-gradient(135deg,var(--green),var(--cyan))" onclick="saveSpecialDay(''+iso+'','rest')">😴 Rest Day</button>'
+    +'<button class="cancel-btn" onclick="closeDatePicker()">Cancel</button>';
+  document.getElementById('date-overlay').style.display='flex';
+}
+function startWorkoutForDate(iso,dayId){
+  if(sessionOnDate(iso)){
+    alert('This date already has a saved choice.');
+    return;
+  }
+  closeDatePicker();
+  D.selectedDate=iso;
+  D.ad=dayId;
+  save();
+  renderToday();
+  startSession(dayId);
+}
+function saveSpecialDay(iso,type){
+  if(sessionOnDate(iso)){
+    alert('This date already has a saved choice.');
+    return;
+  }
+  if(!D.startDate)D.startDate=iso;
+  var label=type==='bike'?'Bike Day':'Rest Day';
+  D.sessions.push({
+    type:type,
+    date:isoToDisplay(iso),
+    isoDate:iso,
+    dayId:type==='bike'?98:99,
+    dayName:label,
+    week:D.week,
+    exData:null,
+    pct:100,
+    sleep:D.sleepToday||''
+  });
+  D.sessions.sort(function(a,b){return (a.isoDate||'').localeCompare(b.isoDate||'');});
+  D.sleepToday='';
+  closeDatePicker();
+  save();updH();renderToday();renderSH();renderCal();
+}
+function missedSlot(dayId,wk){
+  openDateChoice(todayISO());
+}
+function confirmMissed(dayId,wk){
+  alert('Use the flexible calendar: tap any open date, then choose a workout, bike day, or rest day.');
+}
 /* SESSION HISTORY */
 function renderSH(){
   var el=document.getElementById('sess-hist');
@@ -1508,12 +1533,12 @@ function renderSH(){
   [].concat(D.sessions).reverse().slice(0,8).forEach(function(s,ri){
     var i=D.sessions.length-1-ri;
     var day=DAYS.find(function(d){return d.id===s.dayId;});
-    var col=activityColor(s);
+    var col=s.type==='bike'?'#00D4AA':(s.type==='rest'?'#2ECC8E':(day?day.color:'#7C5CFC'));
     var vol=s.exData?Object.values(s.exData).reduce(function(a,d){return a+d.sets.reduce(function(b,x){return b+x.kg*x.reps;},0);},0):0;
     h+='<div class="sess-card" style="border-left:3px solid '+col+'">'
       +'<div class="sess-top"><div>'
-      +'<div style="font-size:15px;font-weight:700;color:'+col+'">'+activityLabel(s)
-      +(s.type==='rest'||s.type==='bike'?'':' <span style="font-size:13px;color:var(--txt3);font-weight:400">\u00b7 Wk'+s.week+'</span>')
+      +'<div style="font-size:15px;font-weight:700;color:'+col+'">'+s.dayName
+      +' <span style="font-size:13px;color:var(--txt3);font-weight:400">'+(s.type?'':'\u00b7 Wk'+s.week)+'</span>'
       +' <span style="font-size:12px;font-weight:700;padding:3px 9px;border-radius:20px;background:'+hexA(pc(s.pct||0),15)+';color:'+pc(s.pct||0)+'">'+(s.pct||0)+'%</span>'
        +(s.feel?' <span style="font-size:11px;color:var(--txt3)">'+s.feel+'</span>':'')+(s.sleep?' <span style="font-size:11px;color:var(--cyan)">· '+s.sleep+'h sleep</span>':'')
       +'</div><div style="font-size:13px;color:var(--txt3);margin-top:3px">'+s.date+' \u00b7 '+Math.round(vol)+' kg\u00b7reps</div></div>'
@@ -1530,14 +1555,21 @@ function renderSH(){
   });
   el.innerHTML=h;
 }
-function delSess(i){if(!confirm('Delete this entry?'))return;D.sessions.splice(i,1);if(!D.sessions.length)D.startDate=null;save();updH();renderDR();renderSH();renderToday();renderCal();}
+function delSess(i){if(!confirm('Delete this session?'))return;D.sessions.splice(i,1);if(!D.sessions.length)D.startDate=null;save();updH();renderDR();renderSH();renderToday();}
 
 /* EDIT SESSION */
 function openEdit(i){
-  var s=D.sessions[i];
-  if(s.type==='rest'||s.type==='bike'){openActivityByDate(s.isoDate);return;}
-  var day=DAYS.find(function(d){return d.id===s.dayId;});var col=day?day.color:'#7C5CFC';
+  var s=D.sessions[i];var day=DAYS.find(function(d){return d.id===s.dayId;});var col=s.type==='bike'?'#00D4AA':(s.type==='rest'?'#2ECC8E':(day?day.color:'#7C5CFC'));
   var todayStr=todayISO();
+  if(s.type && !s.exData){
+    var simple='<div class="handle"></div><button class="sheet-x" onclick="closeSheet()">×</button>'
+      +'<h3 style="color:'+col+'">'+s.dayName+'</h3>'
+      +'<div class="sh-sub">'+s.date+'<br>Only one choice is saved for this date.</div>'
+      +'<button class="sab del" style="width:100%;padding:16px;border-radius:16px" onclick="delSess('+i+');closeSheet();renderCal();">Delete this day</button>';
+    document.getElementById('sheet').innerHTML=simple;
+    document.getElementById('overlay').style.display='flex';
+    return;
+  }
   var h='<div class="handle"></div><button class="sheet-x" onclick="closeSheet()">\u00d7</button>'
     +'<h3 style="color:'+col+'">'+s.dayName+'</h3>'
     +'<div class="sh-sub">'+s.date+' \u00b7 Week '+s.week+(s.feel?' \u00b7 Felt '+s.feel:'')+' \u00b7 <input type="date" style="background:var(--c2);border:0.5px solid var(--b2);border-radius:8px;color:var(--violet2);font-size:13px;padding:5px 9px;outline:none;" value="'+(s.isoDate||'')+'" max="'+todayStr+'" onchange="updSessDate('+i+',this.value)"></div>';
@@ -1730,13 +1762,12 @@ if(window.visualViewport){window.visualViewport.addEventListener('resize', setIP
 function setTodayDate(v){
   if(!v)return;
   D.selectedDate=v;
+  var d=new Date(v+'T00:00:00');
+  var map={0:1,1:2,2:3,4:4,5:5};
+  if(map[d.getDay()])D.ad=map[d.getDay()];
   save();renderToday();renderDR();renderDB();
 }
 function setTodayDay(v){D.ad=parseInt(v)||1;save();renderToday();renderDR();renderDB();}
-function setActivityMode(mode){
-  if(mode==='workout'){renderToday();return;}
-  saveSimpleDay(mode,D.selectedDate||todayISO());
-}
 function setSleepToday(v){D.sleepToday=v;save();}
 
 load();
